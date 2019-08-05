@@ -3,6 +3,9 @@ module Client exposing (main)
 import Browser
 import Html exposing (Html, button, div, text)
 import Html.Events exposing (onClick)
+import Http
+import Json.Decode
+import Json.Encode
 
 
 main : Program Flags Model Msg
@@ -38,7 +41,7 @@ init flags =
 
 type Msg
     = NoOp
-    | Fetch
+    | GotText (Result Http.Error String)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -47,17 +50,29 @@ update msg model =
         NoOp ->
             ( model, Cmd.none )
 
-        Fetch ->
-            ( model, Cmd.none )
+        GotText result ->
+            case result of
+                Ok resp ->
+                    ( model, Cmd.none )
+
+                Err _ ->
+                    ( model, Cmd.none )
 
 
 
--- VIEW
+-- HTTP
 
 
 fetch : Model -> Cmd Msg
 fetch model =
-    Cmd.none
+    Http.get
+        { url = model.endpoint
+        , expect = Http.expectString GotText
+        }
+
+
+
+-- VIEW
 
 
 view : Model -> Html Msg
