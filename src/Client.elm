@@ -10,7 +10,12 @@ import Json.Encode
 
 main : Program Flags Model Msg
 main =
-    Browser.element { init = init, update = update, view = view, subscriptions = subscriptions }
+    Browser.element
+        { init = init
+        , update = update
+        , view = view
+        , subscriptions = subscriptions
+        }
 
 
 
@@ -19,6 +24,7 @@ main =
 
 type alias Model =
     { endpoint : String
+    , result : String
     }
 
 
@@ -30,7 +36,7 @@ init : Flags -> ( Model, Cmd Msg )
 init flags =
     let
         model =
-            Model "localhost:4567"
+            Model "http://localhost:4567/example" "Fetching"
     in
     ( model, fetch model )
 
@@ -53,9 +59,9 @@ update msg model =
         GotText result ->
             case result of
                 Ok resp ->
-                    ( model, Cmd.none )
+                    ( { model | result = resp }, Cmd.none )
 
-                Err _ ->
+                Err err ->
                     ( model, Cmd.none )
 
 
@@ -78,7 +84,7 @@ fetch model =
 view : Model -> Html Msg
 view model =
     div []
-        []
+        [ text model.result ]
 
 
 subscriptions : Model -> Sub msg
