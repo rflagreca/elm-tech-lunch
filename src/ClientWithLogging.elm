@@ -79,8 +79,8 @@ update msg model =
                 Ok resp ->
                     ( { model | response = resp, fetchState = Success }, Cmd.none )
 
-                Err err ->
-                    ( { model | fetchState = Failure }, Cmd.none )
+                Err error ->
+                    ( { model | fetchState = Failure }, logError error )
 
 
 
@@ -98,6 +98,15 @@ fetch model =
         , timeout = Nothing
         , tracker = Nothing
         }
+
+
+logError : Http.Error -> Cmd Msg
+logError error =
+    let
+        debug =
+            Debug.log "Error" error
+    in
+    Cmd.none
 
 
 responseDecoder : Decoder Response
