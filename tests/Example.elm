@@ -1,6 +1,7 @@
 module Example exposing (suite)
 
 import Client exposing (responseDecoder)
+import ElmFixtures.TestEndpoint exposing (example)
 import Expect exposing (Expectation)
 import Fuzz exposing (Fuzzer, int, list, string)
 import Json.Decode

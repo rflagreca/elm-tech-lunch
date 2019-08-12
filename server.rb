@@ -22,7 +22,7 @@ end
 get '/example' do
   content_type :json
   {
-    stringExample: 'hello',
-    numericExample: 300.45
+    stringExample: 'Hello',
+    numericExample: 100
   }.to_json
 end
