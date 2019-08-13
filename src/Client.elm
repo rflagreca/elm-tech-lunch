@@ -1,8 +1,7 @@
 module Client exposing (main, responseDecoder)
 
 import Browser
-import Html exposing (Html, button, div, text)
-import Html.Events exposing (onClick)
+import Html exposing (Html, div, text)
 import Http
 import Json.Decode exposing (..)
 import Json.Decode.Pipeline as DecodePipeline exposing (required)
@@ -113,8 +112,16 @@ responseDecoder =
 
 view : Model -> Html Msg
 view model =
-    div []
-        [ text <| model.response.stringExample ++ " " ++ String.fromInt model.response.numericExample ]
+    case model.fetchState of
+        Fetching ->
+            div [] [ text "Fetching" ]
+
+        Failure ->
+            div [] [ text "Fetch failed!" ]
+
+        Success ->
+            div []
+                [ text <| model.response.stringExample ++ " " ++ String.fromInt model.response.numericExample ]
 
 
 subscriptions : Model -> Sub msg

@@ -2,6 +2,7 @@
 
 require 'sinatra'
 require 'sinatra/cross_origin'
+require 'sinatra/reloader'
 require 'json'
 
 set :bind, '0.0.0.0'
@@ -23,6 +24,6 @@ get '/example' do
   content_type :json
   {
     stringExample: 'Hello',
-    numericExample: 100
+    numericExample: 3.14
   }.to_json
 end

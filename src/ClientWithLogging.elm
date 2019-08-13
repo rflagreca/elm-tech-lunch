@@ -122,8 +122,16 @@ responseDecoder =
 
 view : Model -> Html Msg
 view model =
-    div []
-        [ text <| model.response.stringExample ++ " " ++ String.fromInt model.response.numericExample ]
+    case model.fetchState of
+        Fetching ->
+            div [] [ text "Fetching" ]
+
+        Failure ->
+            div [] [ text "Fetch failed!" ]
+
+        Success ->
+            div []
+                [ text <| model.response.stringExample ++ " " ++ String.fromInt model.response.numericExample ]
 
 
 subscriptions : Model -> Sub msg
